@@ -15,3 +15,22 @@ pthread_cond_t c_prod = PTHREAD_COND_INITIALIZER;
 
 void *producers(void *param);
 void *consumers(void *param);
+
+int main() {
+	pthread_t tid1, tid2; //thread identifiers
+	int i;
+	if (pthread_create(&tid1,NULL,producers,NULL) != 0) {
+		fprintf(stderr, "Producer thread creation failed");
+		exit(1);
+	}
+	
+	if (pthread_create(&tid2,NULL,consumers,NULL) != 0) {
+		fprintf(stderr, "Consumer thread creation failed");
+		exit(1);
+	}
+
+	pthread_join(tid1,NULL); //producer exit
+	pthread_join(tid2, NULL); //consumer exit
+
+	puts("program ended");
+}

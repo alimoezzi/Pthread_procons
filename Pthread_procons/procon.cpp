@@ -19,12 +19,12 @@ void *consumers(void *param);
 int main() {
 	pthread_t tid1, tid2; //thread identifiers
 	int i;
-	if (pthread_create(&tid1,NULL,producers,NULL) != 0) {
+	if (pthread_create(&tid1, NULL/*behav attr*/, producers, NULL /*args*/) != 0) {
 		fprintf(stderr, "Producer thread creation failed");
 		exit(1);
 	}
 	
-	if (pthread_create(&tid2,NULL,consumers,NULL) != 0) {
+	if (pthread_create(&tid2, NULL, consumers, NULL) != 0) {
 		fprintf(stderr, "Consumer thread creation failed");
 		exit(1);
 	}

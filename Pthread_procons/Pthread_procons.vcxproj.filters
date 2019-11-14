@@ -18,8 +18,10 @@
     <ClCompile Include="procon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="producer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="procon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

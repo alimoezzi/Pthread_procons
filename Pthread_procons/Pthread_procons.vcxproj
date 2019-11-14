@@ -116,7 +116,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="procon.cpp" />
-    <ClCompile Include="producer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="procon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

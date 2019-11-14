@@ -1,6 +1,6 @@
 #include<pthread.h>
 #include<cstdio>
-#include<cstdlib>	
+#include<cstdlib>
 
 #define BUF_SIZE 3
 
@@ -33,6 +33,7 @@ int main() {
 	pthread_join(tid2, NULL); //consumer exit
 
 	puts("program ended");
+	return 0;
 }
 
 
@@ -48,28 +49,28 @@ void * producers(void * param) {
 		size++;
 		pthread_mutex_unlock(&m);
 		pthread_cond_signal(&c_cons);
-		printf("producer inserted %d @ %d", i, size - 1);
+		printf("	producer inserted %d @ %d\n", i, add - 1);
 	}
 	size = -1;
-	puts("producer ending");
+	puts("producer ending\n");
 	return 0;
 }
 
-void * consumer(void * param) {
+void * consumers(void * param) {
 	while(size > -1) {
 		pthread_mutex_lock(&m);
 		while (size == 0) { //block if buffer is empty
 			pthread_cond_wait(&c_cons, &m);
 		}
 		int i = buffer[rem];
-		add = (rem + 1) % BUF_SIZE;
+		rem = (rem - 1) % BUF_SIZE;
 		size--;
 		pthread_mutex_unlock(&m);
 		pthread_cond_signal(&c_prod);
-		printf("consume %d @ %d", i, rem - 1);
+		printf("consume %d @ %d\n", i, rem + 1);
 	}
 	size = -1;
-	puts("consumer ending");
+	puts("consumer ending\n");
 	return 0;
 }
 

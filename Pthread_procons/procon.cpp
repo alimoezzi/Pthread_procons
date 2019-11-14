@@ -61,6 +61,7 @@ void * consumers(void * param) {
 	while (size > -1) {
 		pthread_mutex_lock(&m);
 		while (size == 0 and i < MAX_PROD) { //block if buffer is empty
+			puts("consumer slept");
 			pthread_cond_wait(&c_cons, &m);
 		}
 		if (i == MAX_PROD) break;

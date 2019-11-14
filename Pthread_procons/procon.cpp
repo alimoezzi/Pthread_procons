@@ -51,25 +51,26 @@ void * producers(void * param) {
 		pthread_mutex_unlock(&m);
 		pthread_cond_signal(&c_cons);
 	}
-	size = -1;
 	puts("producer ending\n");
 	return 0;
 }
 
 void * consumers(void * param) {
-	while(size > -1) {
+	int i = 0;
+	do {
 		pthread_mutex_lock(&m);
-		while (size == 0) { //block if buffer is empty
+		while (size == 0 and i < 19) { //block if buffer is empty
 			pthread_cond_wait(&c_cons, &m);
 		}
-		int i = buffer[rem];
+		if (i == 19) break;
+		i = buffer[rem];
 		printf("consume %d @ %d\n", i, rem);
 		rem = (rem + 1) % BUF_SIZE;
 		size--;
 		pthread_mutex_unlock(&m);
 		pthread_cond_signal(&c_prod);
-	}
-	size = -1;
+	} while (size > -1);
+
 	puts("consumer ending\n");
 	return 0;
 }

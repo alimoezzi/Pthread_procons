@@ -7,13 +7,13 @@ void * producers(void * param) {
 		while (size == BUF_SIZE) { //block if buffer is full
 			pthread_cond_wait(&c_prod, &m);
 		}
-		buffer[add++] = i;
+		buffer[add++ % BUF_SIZE] = i;
 		size++;
 		pthread_mutex_unlock(&m);
 		pthread_cond_signal(&c_cons);
 		printf("producer inserted %d @ %d", i, size - 1);
 	}
-
+	size = -1;
 	puts("producer ending");
 	return 0;
 }

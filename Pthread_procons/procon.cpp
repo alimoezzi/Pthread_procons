@@ -34,3 +34,42 @@ int main() {
 
 	puts("program ended");
 }
+
+
+void * producers(void * param) {
+	for (int i = 0; i < 20; i++) {
+		pthread_mutex_lock(&m);
+		if (size > BUF_SIZE) exit(0); //overflow
+		while (size == BUF_SIZE) { //block if buffer is full
+			pthread_cond_wait(&c_prod, &m);
+		}
+		buffer[add] = i;
+		add = (add + 1) % BUF_SIZE;
+		size++;
+		pthread_mutex_unlock(&m);
+		pthread_cond_signal(&c_cons);
+		printf("producer inserted %d @ %d", i, size - 1);
+	}
+	size = -1;
+	puts("producer ending");
+	return 0;
+}
+
+void * consumer(void * param) {
+	while(size > -1) {
+		pthread_mutex_lock(&m);
+		while (size == 0) { //block if buffer is empty
+			pthread_cond_wait(&c_cons, &m);
+		}
+		int i = buffer[rem];
+		add = (rem + 1) % BUF_SIZE;
+		size--;
+		pthread_mutex_unlock(&m);
+		pthread_cond_signal(&c_prod);
+		printf("consume %d @ %d", i, rem - 1);
+	}
+	size = -1;
+	puts("consumer ending");
+	return 0;
+}
+

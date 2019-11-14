@@ -45,11 +45,11 @@ void * producers(void * param) {
 			pthread_cond_wait(&c_prod, &m);
 		}
 		buffer[add] = i;
+		printf("	producer inserted %d @ %d\n", i, add);
 		add = (add + 1) % BUF_SIZE;
 		size++;
 		pthread_mutex_unlock(&m);
 		pthread_cond_signal(&c_cons);
-		printf("	producer inserted %d @ %d\n", i, add - 1);
 	}
 	size = -1;
 	puts("producer ending\n");
@@ -63,11 +63,11 @@ void * consumers(void * param) {
 			pthread_cond_wait(&c_cons, &m);
 		}
 		int i = buffer[rem];
-		rem = (rem - 1) % BUF_SIZE;
+		printf("consume %d @ %d\n", i, rem);
+		rem = (rem + 1) % BUF_SIZE;
 		size--;
 		pthread_mutex_unlock(&m);
 		pthread_cond_signal(&c_prod);
-		printf("consume %d @ %d\n", i, rem + 1);
 	}
 	size = -1;
 	puts("consumer ending\n");
